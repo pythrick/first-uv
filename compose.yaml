@@ -1,0 +1,21 @@
+services:
+  first-uv:
+    platform: linux/amd64
+    build: .
+    image: first-uv
+    volumes:
+      - ./src:/app/src:ro
+    command: ["uv", "run", "uvicorn", "first_uv:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 5s
+      retries: 3
+    restart: on-failure
+    ports:
+      - "8000:8000"
+    networks:
+      - default
+
+networks:
+  default:
+
